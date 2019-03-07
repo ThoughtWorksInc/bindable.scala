@@ -146,7 +146,7 @@ package bindable {
     *
     *          @dom
     *          def mySection[A: BindableSeq.Lt[?, Node]](parameter: A) = {
-    *            <section>{toBindableSeqOps(parameter).bindSeq}</section>
+    *            <section>{parameter.bindSeq}</section>
     *          }
     *          }}}
     *
