@@ -70,3 +70,4 @@ Unlike use cases of `myComponent1`, all the above use cases of `myComponent2` co
 
 * [Documentation](https://javadoc.io/page/com.thoughtworks.binding/bindable_sjs0.6_2.12/latest/com/thoughtworks/binding/bindable/index.html)
 * [Binding.scala](https://github.com/ThoughtWorksInc/Binding.scala)
+* [Limitations of the component model](https://github.com/ThoughtWorksInc/Binding.scala/issues/128)
