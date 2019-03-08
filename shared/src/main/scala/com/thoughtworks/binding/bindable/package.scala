@@ -55,7 +55,7 @@ package bindable {
     *
     *          Note that the `?` syntax requires the Scala plug-in
     *          [[https://github.com/non/kind-projector kind-projector]],
-    *          which can be enabled by add the following setting into your `build.sbt`:
+    *          which can be enabled by adding the following setting into your `build.sbt`:
     *
     *          `<pre>addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.9")</pre>`
     *
@@ -154,7 +154,7 @@ package bindable {
     *
     *          Note that the `?` syntax requires the Scala plug-in
     *          [[https://github.com/non/kind-projector kind-projector]],
-    *          which can be enabled by add the following setting into your `build.sbt`:
+    *          which can be enabled by adding the following setting into your `build.sbt`:
     *
     *          `<pre>addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.9")</pre>`
     *
