@@ -39,14 +39,14 @@ package bindable {
     *
     * @example The implicit conversion to `Binding` can be enabled by the following `import` statement:
     *
-    *          `<pre>import com.thoughtworks.binding.bindable._</pre>`
+    *          {{{
+    *          import com.thoughtworks.binding.bindable._
+    *          }}}
     *
     *          Then, a `@dom` XHTML template can establish data-binding on any `parameter`
     *          as long as a [[Bindable]] type class for the `parameter` type is available.
     *
     *          {{{
-    *          import com.thoughtworks.binding._, Binding._
-    *
     *          @dom
     *          def mySection[A: Bindable.Lt[?, String]](parameter: A) = {
     *            <img class={parameter.bind}/>
@@ -62,6 +62,7 @@ package bindable {
     *          The `mySection` method accepts any parameter who is a subtype of `Binding[String]`.
     *
     *          {{{
+    *          import com.thoughtworks.binding._, Binding._
     *          Binding {
     *            mySection(Binding("my-class-1")).bind.className should be("my-class-1")
     *            mySection(Constant("my-class-2")).bind.className should be("my-class-2")
@@ -135,13 +136,14 @@ package bindable {
     * @example The [[com.thoughtworks.binding.bindable.BindableSeq.Ops.bindSeq bindSeq]]
     *          can be enabled by the following `import` statement:
     *
-    *          `<pre>import com.thoughtworks.binding.bindable._</pre>`
+    *          {{{
+    *          import com.thoughtworks.binding.bindable._
+    *          }}}
     *
     *          Then, a `@dom` XHTML template can establish data-binding on any `parameter`
     *          as long as a [[BindableSeq]] type class for the `parameter` type is available.
     *
     *          {{{
-    *          import com.thoughtworks.binding._, Binding._
     *          import org.scalajs.dom.raw._
     *
     *          @dom
@@ -160,6 +162,7 @@ package bindable {
     *          or `Binding[BindingSeq[Node]]`.
     *
     *          {{{
+    *          import com.thoughtworks.binding._, Binding._
     *          @dom def myButton: Binding[HTMLButtonElement] = <button type="button">My Button 0</button>
     *          @dom def myButtons: Binding[BindingSeq[Node]] = <button type="button">My Button 1</button><button type="button">My Button 2</button>
     *          Binding {
