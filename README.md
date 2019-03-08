@@ -19,7 +19,7 @@ For example, the following component accepts two `Binding` as parameters:
 }
 ```
 
-This component allows partial rendering when the value of `title` or `children` is changed. Unfortunately, it is too verbose to use `myComponent1` for simple use cases.
+By typing parameters as `Binding`s, `myComponent1` allows partial rendering whenever the value of `title` or `children` is changed. Unfortunately, it is too verbose to use `myComponent1` for simple use cases when the parameters are constants.
 
 ```scala
 // Does not compile
