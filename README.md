@@ -3,7 +3,7 @@
 [![Scaladoc](https://javadoc.io/badge/com.thoughtworks.binding/bindable_sjs0.6_2.12.svg?label=scaladoc)](https://javadoc.io/page/com.thoughtworks.binding/bindable_sjs0.6_2.12/latest/com/thoughtworks/binding/bindable/index.html)
 [![Build Status](https://travis-ci.org/ThoughtWorksInc/bindable.scala.svg)](https://travis-ci.org/ThoughtWorksInc/bindable.scala)
 
-**bindable.scala** is a library of type classes for creating [Binding.scala](https://github.com/ThoughtWorksInc/Binding.scala)\-based reusable components.
+**bindable.scala** is a library of type classes for creating user-friendly [Binding.scala](https://github.com/ThoughtWorksInc/Binding.scala) components.
 
 ## Motivation
 
