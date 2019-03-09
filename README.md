@@ -64,7 +64,7 @@ import com.thoughtworks.binding._, Binding._
 @dom def myUseCases6 = myComponent2("My Title", Binding(<img/><img/>)).bind
 ```
 
-Unlike use cases of `myComponent1`, all the above use cases of `myComponent2` compile now, because of the `Bindable` and `BindableSeq` type classes.
+Unlike use cases of `myComponent1`, all the above use cases of `myComponent2` compile now, with the help of the `Bindable` and `BindableSeq` type classes.
 
 ## Links
 
