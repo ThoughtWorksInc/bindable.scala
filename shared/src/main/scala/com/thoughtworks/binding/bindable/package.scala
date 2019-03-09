@@ -35,7 +35,7 @@ package bindable {
 
   }
 
-  /** A dependent type class that witnesses a type that can be convert to a `Binding[Value]`.
+  /** A dependent type class that witnesses a type that can be converted to a `Binding[Value]`.
     *
     * @example The implicit conversion to `Binding` can be enabled by the following `import` statement:
     *
@@ -131,7 +131,7 @@ package bindable {
 
   }
 
-  /** A dependent type class that witnesses a type that can be convert to a `BindingSeq[Value]`.
+  /** A dependent type class that witnesses a type that can be converted to a `BindingSeq[Value]`.
     *
     * @example The [[com.thoughtworks.binding.bindable.BindableSeq.Ops.bindSeq bindSeq]]
     *          can be enabled by the following `import` statement:
