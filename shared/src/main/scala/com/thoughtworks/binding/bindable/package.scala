@@ -90,7 +90,10 @@ package bindable {
   }
 
   private[bindable] trait LowPriorityBindableSeq2 {
-    implicit def constantBindable[Value0]: BindableSeq.Aux[Value0, Value0] = new BindableSeq[Value0] {
+    @deprecated("Potential naming conflict with `Bindable.constantBindable`.", "1.0.2")
+    private[bindable] def constantBindable[Value] = constantsBindableSeq[Value]
+    
+    implicit def constantsBindableSeq[Value0]: BindableSeq.Aux[Value0, Value0] = new BindableSeq[Value0] {
       type Value = Value0
       def toBindingSeq(from: Value): BindingSeq[Value] = Constants(from)
     }
