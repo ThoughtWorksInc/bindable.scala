@@ -1,6 +1,6 @@
 libraryDependencies += "org.scalatest" %%% "scalatest" % "3.0.7" % Test
 
-libraryDependencies += "com.thoughtworks.binding" %%% "binding" % "11.6.0"
+libraryDependencies += "com.thoughtworks.binding" %%% "binding" % "11.6.1"
 
 libraryDependencies += "com.github.mpilquist" %%% "simulacrum" % "0.15.0"
 
