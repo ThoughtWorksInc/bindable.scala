@@ -1,3 +1,5 @@
+Global / parallelExecution := false
+
 publish / skip := true
 
 organization in ThisBuild := "com.thoughtworks.binding"
