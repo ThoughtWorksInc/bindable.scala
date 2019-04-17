@@ -1,6 +1,8 @@
 package com.thoughtworks.binding
 
+import com.thoughtworks.binding._
 import com.thoughtworks.binding.Binding._
+import com.thoughtworks.enableIf
 import simulacrum._
 import scala.language.implicitConversions
 
@@ -47,6 +49,9 @@ package bindable {
   import Jvm._
   import Js._
 
+  import scala.concurrent.{ExecutionContext, Future}
+  import scala.util.Try
+
   private[bindable] trait LowPriorityBindable0 {
 
     implicit def constantBindable[Value0]: Bindable.Aux[Value0, Value0] = new Bindable[Value0] {
@@ -68,6 +73,21 @@ package bindable {
       type Value = Value0
       def toBinding(from: Binding[Value0]): Binding[Value] = from
     }
+
+    implicit def futureBindable[Value0](
+        implicit executionContext: ExecutionContext): Bindable.Aux[Future[Value0], Option[Try[Value0]]] =
+      new Bindable[Future[Value0]] {
+        type Value = Option[Try[Value0]]
+        def toBinding(from: Future[Value0]): Binding[Value] = FutureBinding(from)
+      }
+
+    @enableIf(c => c.compilerSettings.exists(_.matches("""^-Xplugin:.*scalajs-compiler_[0-9\.\-]*\.jar$""")))
+    implicit def thenableBindable[Value0]
+      : Bindable.Aux[scala.scalajs.js.Thenable[Value0], Option[Either[Any, Value0]]] =
+      new Bindable[scala.scalajs.js.Thenable[Value0]] {
+        type Value = Option[Either[Any, Value0]]
+        def toBinding(from: scala.scalajs.js.Thenable[Value0]): Binding[Value] = JsPromiseBinding(from)
+      }
 
   }
 
