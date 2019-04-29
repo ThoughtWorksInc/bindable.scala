@@ -1,6 +1,6 @@
 enablePlugins(Example)
 
-libraryDependencies += "com.thoughtworks.binding" %%% "jspromisebinding" % "11.7.0+145-d29c9b6f"
+libraryDependencies += "com.thoughtworks.binding" %%% "jspromisebinding" % "11.7.0+146-ae88d318"
 
 libraryDependencies += "com.thoughtworks.binding" %%% "dom" % "11.7.0" % Test
 
