@@ -1,4 +1,4 @@
-libraryDependencies += "org.scalatest" %%% "scalatest" % "3.0.7" % Test
+libraryDependencies += "org.scalatest" %%% "scalatest" % "3.0.8" % Test
 
 libraryDependencies += "com.thoughtworks.binding" %%% "binding" % "11.7.0"
 
