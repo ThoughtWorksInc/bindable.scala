@@ -6,7 +6,7 @@ libraryDependencies += "com.thoughtworks.binding" %%% "futurebinding" % "11.7.0"
 
 libraryDependencies += "com.github.mpilquist" %%% "simulacrum" % "0.15.0"
 
-libraryDependencies += "com.thoughtworks.enableIf" %% "enableif" % "1.1.6"
+libraryDependencies += "com.thoughtworks.enableIf" %% "enableif" % "1.1.7"
 
 // Enable macro annotation by scalac flags for Scala 2.13
 scalacOptions ++= {
