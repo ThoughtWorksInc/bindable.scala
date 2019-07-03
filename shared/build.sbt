@@ -1,8 +1,8 @@
 libraryDependencies += "org.scalatest" %%% "scalatest" % "3.0.8" % Test
 
-libraryDependencies += "com.thoughtworks.binding" %%% "binding" % "11.7.0"
+libraryDependencies += "com.thoughtworks.binding" %%% "binding" % "11.8.0"
 
-libraryDependencies += "com.thoughtworks.binding" %%% "futurebinding" % "11.7.0"
+libraryDependencies += "com.thoughtworks.binding" %%% "futurebinding" % "11.8.0"
 
 libraryDependencies += "com.github.mpilquist" %%% "simulacrum" % "0.15.0"
 
