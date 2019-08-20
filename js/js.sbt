@@ -4,7 +4,7 @@ libraryDependencies += "com.thoughtworks.binding" %%% "jspromisebinding" % "11.7
 
 libraryDependencies += "com.thoughtworks.binding" %%% "dom" % "11.8.1" % Test
 
-addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.10")
+addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.0")
 
 jsDependencies in Test += RuntimeDOM
 
