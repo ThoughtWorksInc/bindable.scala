@@ -4,7 +4,7 @@ libraryDependencies += "com.thoughtworks.binding" %%% "binding" % "11.8.1"
 
 libraryDependencies += "com.thoughtworks.binding" %%% "futurebinding" % "11.8.1"
 
-libraryDependencies += "com.github.mpilquist" %%% "simulacrum" % "0.15.0"
+libraryDependencies += "org.typelevel" %%% "simulacrum" % "1.0.0"
 
 libraryDependencies += "com.thoughtworks.enableIf" %% "enableif" % "1.1.7"
 
