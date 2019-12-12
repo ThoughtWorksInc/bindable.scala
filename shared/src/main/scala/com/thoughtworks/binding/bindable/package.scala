@@ -113,7 +113,7 @@ package bindable {
     *          [[https://github.com/non/kind-projector kind-projector]],
     *          which can be enabled by adding the following setting into your `build.sbt`:
     *
-    *          <pre>addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.10")</pre>
+    *          <pre>addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.0")</pre>
     *
     *          The `mySection` method accepts any parameter who is a subtype of `Binding[String]`.
     *
@@ -245,7 +245,7 @@ package bindable {
     *          [[https://github.com/non/kind-projector kind-projector]],
     *          which can be enabled by adding the following setting into your `build.sbt`:
     *
-    *          <pre>addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.10")</pre>
+    *          <pre>addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.0")</pre>
     *
     *          The `mySection` method accepts any parameter who is a subtype of `Binding[Node]`
     *          or `Binding[BindingSeq[Node]]`.
