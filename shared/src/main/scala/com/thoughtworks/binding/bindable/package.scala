@@ -5,6 +5,7 @@ import com.thoughtworks.binding.Binding._
 import com.thoughtworks.enableIf
 import simulacrum._
 import scala.language.implicitConversions
+import scala.collection.immutable.ArraySeq
 
 package object bindable extends Bindable.ToBindableOps with BindableSeq.ToBindableSeqOps {
   implicit def bindableToBinding[From, Value](from: From)(implicit bindable: Bindable.Lt[From, Value]): Binding[Value] =
@@ -28,7 +29,7 @@ package bindable {
       implicit def jsArrayBindableSeq[Value0]: BindableSeq.Aux[js.Array[Value0], Value0] =
         new BindableSeq[js.Array[Value0]] {
           type Value = Value0
-          def toBindingSeq(from: js.Array[Value0]): BindingSeq[Value] = Constants(from: _*)
+          def toBindingSeq(from: js.Array[Value0]): BindingSeq[Value] = Constants(scalajs.runtime.toScalaVarArgs(from): _*)
         }
     }
 
@@ -39,7 +40,7 @@ package bindable {
           type Value = Value0
           def toBindingSeq(from: Binding[js.Array[Value0]]): BindingSeq[Value] =
             Constants(from).flatMap { from =>
-              Constants(from.bind: _*)
+              Constants(scalajs.runtime.toScalaVarArgs(from.bind): _*)
             }
         }
     }
@@ -91,54 +92,7 @@ package bindable {
 
   }
 
-  /** A dependent type class that witnesses a type that can be converted to a `Binding[Value]`.
-    *
-    * @example The implicit conversion to `Binding` can be enabled by the following `import` statement:
-    *
-    *          {{{
-    *          import com.thoughtworks.binding.bindable._
-    *          }}}
-    *
-    *          Then, a `@dom` XHTML template can establish data-binding on any `parameter`
-    *          as long as a [[Bindable]] type class for the `parameter` type is available.
-    *
-    *          {{{
-    *          @dom
-    *          def mySection[A: Bindable.Lt[?, String]](parameter: A) = {
-    *            <img class={parameter.bind}/>
-    *          }
-    *          }}}
-    *
-    *          Note that the `?` syntax requires the Scala plug-in
-    *          [[https://github.com/non/kind-projector kind-projector]],
-    *          which can be enabled by adding the following setting into your `build.sbt`:
-    *
-    *          <pre>addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.3")</pre>
-    *
-    *          The `mySection` method accepts any parameter who is a subtype of `Binding[String]`.
-    *
-    *          {{{
-    *          import com.thoughtworks.binding._, Binding._
-    *          Binding {
-    *            mySection(Binding("my-class-1")).bind.className should be("my-class-1")
-    *            mySection(Constant("my-class-2")).bind.className should be("my-class-2")
-    *          }.watch()
-    *          }}}
-    *
-    *          And the `mySection` method also accepts [[java.lang.String String]] parameter.
-    *          {{{
-    *          Binding {
-    *            mySection("my-class-3").bind.className should be("my-class-3")
-    *          }.watch()
-    *          }}}
-    *
-    *          `mySection` should not accept irrelevant parameter types like [[scala.List]] or [[scala.Int]].
-    *
-    *          {{{
-    *          "mySection(List.empty)" shouldNot compile
-    *          "mySection(42)" shouldNot compile
-    *          }}}
-    */
+  /** A dependent type class that witnesses a type that can be converted to a `Binding[Value]`. */
   @typeclass
   trait Bindable[-From] {
     type Value
@@ -171,7 +125,7 @@ package bindable {
     implicit def scalaArrayBindableSeq[Value0]: BindableSeq.Aux[Array[Value0], Value0] =
       new BindableSeq[Array[Value0]] {
         type Value = Value0
-        def toBindingSeq(from: Array[Value0]): BindingSeq[Value] = Constants(from: _*)
+        def toBindingSeq(from: Array[Value0]): BindingSeq[Value] = Constants(ArraySeq.unsafeWrapArray(from): _*)
       }
   }
 
@@ -205,7 +159,7 @@ package bindable {
         type Value = Value0
         def toBindingSeq(from: Binding[Array[Value0]]): BindingSeq[Value] =
           Constants(from).flatMap { from =>
-            Constants(from.bind: _*)
+            Constants(ArraySeq.unsafeWrapArray(from.bind): _*)
           }
       }
 
@@ -220,70 +174,7 @@ package bindable {
 
   }
 
-  /** A dependent type class that witnesses a type that can be converted to a `BindingSeq[Value]`.
-    *
-    * @example The [[com.thoughtworks.binding.bindable.BindableSeq.Ops.bindSeq bindSeq]]
-    *          can be enabled by the following `import` statement:
-    *
-    *          {{{
-    *          import com.thoughtworks.binding.bindable._
-    *          }}}
-    *
-    *          Then, a `@dom` XHTML template can establish data-binding on any `parameter`
-    *          as long as a [[BindableSeq]] type class for the `parameter` type is available.
-    *
-    *          {{{
-    *          import org.scalajs.dom.raw._
-    *
-    *          @dom
-    *          def mySection[A: BindableSeq.Lt[?, Node]](parameter: A) = {
-    *            <section>{parameter.bindSeq}</section>
-    *          }
-    *          }}}
-    *
-    *          Note that the `?` syntax requires the Scala plug-in
-    *          [[https://github.com/non/kind-projector kind-projector]],
-    *          which can be enabled by adding the following setting into your `build.sbt`:
-    *
-    *          <pre>addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.3")</pre>
-    *
-    *          The `mySection` method accepts any parameter who is a subtype of `Binding[Node]`
-    *          or `Binding[BindingSeq[Node]]`.
-    *
-    *          {{{
-    *          import com.thoughtworks.binding._, Binding._
-    *          @dom def myButton: Binding[HTMLButtonElement] = <button type="button">My Button 0</button>
-    *          @dom def myButtons: Binding[BindingSeq[Node]] = <button type="button">My Button 1</button><button type="button">My Button 2</button>
-    *          Binding {
-    *            mySection(myButton).bind.innerHTML should be("<button type=\"button\">My Button 0</button>")
-    *            mySection(myButtons).bind.innerHTML should be("<button type=\"button\">My Button 1</button><button type=\"button\">My Button 2</button>")
-    *          }.watch()
-    *          }}}
-    *
-    *          And the `mySection` method also accepts `Node`, `BindingSeq[Node]`, `List[Node]`, `Array[Node]`, `js.Array[Node]`, or `Binding[js.Array[Node]]` parameter.
-    *          {{{
-    *          import scala.scalajs.js
-    *          @dom def test = {
-    *            mySection(<button type="button">My Button 3</button>).bind.innerHTML should be("<button type=\"button\">My Button 3</button>")
-    *            mySection(<button type="button">My Button 4</button><button type="button">My Button 5</button>).bind.innerHTML should be(
-    *              "<button type=\"button\">My Button 4</button><button type=\"button\">My Button 5</button>"
-    *            )
-    *            mySection(List(<button type="button">My Button 6</button>, <button type="button">My Button 7</button>)).bind.innerHTML should be("<button type=\"button\">My Button 6</button><button type=\"button\">My Button 7</button>")
-    *            mySection(Array(<button type="button">My Button 8</button>, <button type="button">My Button 9</button>)).bind.innerHTML should be("<button type=\"button\">My Button 8</button><button type=\"button\">My Button 9</button>")
-    *            mySection(js.Array(<button type="button">My Button 10</button>, <button type="button">My Button 11</button>)).bind.innerHTML should be("<button type=\"button\">My Button 10</button><button type=\"button\">My Button 11</button>")
-    *            mySection(Constant(js.Array(<button type="button">My Button 12</button>, <button type="button">My Button 13</button>))).bind.innerHTML should be("<button type=\"button\">My Button 12</button><button type=\"button\">My Button 13</button>")
-    *          }
-    *
-    *          test.watch()
-    *          }}}
-    *
-    *          `mySection` should not accept irrelevant parameter types like [[scala.collection.immutable.Set]] or [[scala.Int]].
-    *
-    *          {{{
-    *          "mySection(Set.empty)" shouldNot compile
-    *          "mySection(42)" shouldNot compile
-    *          }}}
-    */
+  /** A dependent type class that witnesses a type that can be converted to a `BindingSeq[Value]`. */
   @typeclass
   trait BindableSeq[-From] {
     type Value
