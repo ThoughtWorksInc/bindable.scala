@@ -1,8 +1,6 @@
 enablePlugins(Example)
 
-libraryDependencies += "com.thoughtworks.binding" %%% "jspromisebinding" % "11.9.0"
-
-libraryDependencies += "com.thoughtworks.binding" %%% "dom" % "11.9.0" % Test
+libraryDependencies += "com.thoughtworks.binding" %%% "jspromisebinding" % "12.0.0-M0"
 
 addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.3")
 
