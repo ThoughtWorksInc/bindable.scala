@@ -1,6 +1,6 @@
 # bindable.scala
 [![Latest version](https://index.scala-lang.org/thoughtworksinc/bindable.scala/bindable/latest.svg)](https://index.scala-lang.org/thoughtworksinc/bindable.scala/bindable)
-[![Scaladoc](https://javadoc.io/badge/com.thoughtworks.binding/bindable_sjs0.6_2.12.svg?label=scaladoc)](https://javadoc.io/page/com.thoughtworks.binding/bindable_sjs0.6_2.12/latest/com/thoughtworks/binding/bindable/index.html)
+[![Scaladoc](https://javadoc.io/badge/com.thoughtworks.binding/bindable_sjs0.6_2.13.svg?label=scaladoc)](https://javadoc.io/page/com.thoughtworks.binding/bindable_sjs0.6_2.13/latest/com/thoughtworks/binding/bindable/index.html)
 [![Build Status](https://travis-ci.org/ThoughtWorksInc/bindable.scala.svg)](https://travis-ci.org/ThoughtWorksInc/bindable.scala)
 
 **bindable.scala** is a library of type classes for creating user-friendly [Binding.scala](https://github.com/ThoughtWorksInc/Binding.scala) components.
@@ -68,6 +68,6 @@ Unlike use cases of `myComponent1`, all the above use cases of `myComponent2` co
 
 ## Links
 
-* [Documentation](https://javadoc.io/page/com.thoughtworks.binding/bindable_sjs0.6_2.12/latest/com/thoughtworks/binding/bindable/index.html)
+* [Documentation](https://javadoc.io/page/com.thoughtworks.binding/bindable_sjs0.6_2.13/latest/com/thoughtworks/binding/bindable/index.html)
 * [Binding.scala](https://github.com/ThoughtWorksInc/Binding.scala)
 * [Limitations of the component model](https://github.com/ThoughtWorksInc/Binding.scala/issues/128)
