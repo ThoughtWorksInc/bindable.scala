@@ -2,7 +2,7 @@ enablePlugins(ScalaJSBundlerPlugin)
 
 enablePlugins(Example)
 
-libraryDependencies += "com.thoughtworks.binding" %%% "jspromisebinding" % "12.0.0-M1"
+libraryDependencies += "com.thoughtworks.binding" %%% "jspromisebinding" % "12.0.0"
 
 addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.10.3")
 
