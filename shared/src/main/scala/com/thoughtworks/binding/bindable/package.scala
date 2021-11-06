@@ -150,7 +150,7 @@ package bindable {
 
   private[bindable] trait LowPriorityBindableSeq0 extends LowPriorityBindableSeq1 {
 
-    implicit def bindingSeqBindableSeq[Value0]: BindableSeq.Aux[BindingSeq[Value0], Value0] =
+    private[bindable] def bindingSeqBindableSeq[Value0]: BindableSeq.Aux[BindingSeq[Value0], Value0] =
       new BindableSeq[BindingSeq[Value0]] {
         type Value = Value0
         def toBindingSeq(from: BindingSeq[Value0]): BindingSeq[Value] = from
