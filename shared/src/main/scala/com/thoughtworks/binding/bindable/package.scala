@@ -29,7 +29,9 @@ package bindable {
       implicit def jsArrayBindableSeq[Value0]: BindableSeq.Aux[js.Array[Value0], Value0] =
         new BindableSeq[js.Array[Value0]] {
           type Value = Value0
-          def toBindingSeq(from: js.Array[Value0]): BindingSeq[Value] = Constants(scalajs.runtime.toScalaVarArgs(from): _*)
+          def toBindingSeq(from: js.Array[Value0]): BindingSeq[Value] = Constants(
+            scalajs.runtime.toScalaVarArgs(from): _*
+          )
         }
     }
 
@@ -75,8 +77,9 @@ package bindable {
       def toBinding(from: Binding[Value0]): Binding[Value] = from
     }
 
-    implicit def futureBindable[Value0](
-        implicit executionContext: ExecutionContext): Bindable.Aux[Future[Value0], Option[Try[Value0]]] =
+    implicit def futureBindable[Value0](implicit
+        executionContext: ExecutionContext
+    ): Bindable.Aux[Future[Value0], Option[Try[Value0]]] =
       new Bindable[Future[Value0]] {
         type Value = Option[Try[Value0]]
         def toBinding(from: Future[Value0]): Binding[Value] = FutureBinding(from)
@@ -84,7 +87,7 @@ package bindable {
 
     @enableIf(c => c.compilerSettings.exists(_.matches("""^-Xplugin:.*scalajs-compiler_[0-9\.\-]*\.jar$""")))
     implicit def thenableBindable[Value0]
-      : Bindable.Aux[scala.scalajs.js.Thenable[Value0], Option[Either[Any, Value0]]] =
+        : Bindable.Aux[scala.scalajs.js.Thenable[Value0], Option[Either[Any, Value0]]] =
       new Bindable[scala.scalajs.js.Thenable[Value0]] {
         type Value = Option[Either[Any, Value0]]
         def toBinding(from: scala.scalajs.js.Thenable[Value0]): Binding[Value] = JsPromiseBinding(from)
