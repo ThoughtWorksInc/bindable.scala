@@ -125,7 +125,8 @@ package bindable {
   }
 
   private[bindable] trait LowPriorityBindableSeq1 extends LowPriorityJsBindableSeq2 {
-    implicit def bindingBindableSeq[Value0]: BindableSeq.Aux[Binding[Value0], Value0] =
+    @deprecated("Resulting ambiguous implicit values with watchableBindableSeq", "2.1.1")
+    private[bindable] def bindingBindableSeq[Value0]: BindableSeq.Aux[Binding[Value0], Value0] =
       new BindableSeq[Binding[Value0]] {
         type Value = Value0
         def toBindingSeq(from: Binding[Value0]): BindingSeq[Value] = SingletonBindingSeq(from)
