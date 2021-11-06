@@ -1,4 +1,4 @@
-import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType} 
+import sbtcrossproject.CrossPlugin.autoImport.{crossProject, CrossType}
 
 Global / parallelExecution := false
 
