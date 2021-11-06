@@ -99,7 +99,7 @@ package bindable {
     def toBinding(from: From): Binding[Value]
   }
 
-  private[bindable] trait LowPriorityBindableSeq2 {
+  private[bindable] trait LowPriorityBindableSeq3 {
     @deprecated("Potential naming conflict with `Bindable.constantBindable`.", "1.0.2")
     private[bindable] def constantBindable[Value] = constantsBindableSeq[Value]
 
@@ -107,6 +107,21 @@ package bindable {
       type Value = Value0
       def toBindingSeq(from: Value): BindingSeq[Value] = Constants(from)
     }
+  }
+
+  private[bindable] trait LowPriorityBindableSeq2 extends LowPriorityBindableSeq3 {
+    implicit def watchableBindableSeq[Value0]: BindableSeq.Aux[Watchable[Value0], Value0] =
+      new BindableSeq[Watchable[Value0]] {
+        type Value = Value0
+        def toBindingSeq(from: Watchable[Value]): BindingSeq[Value] = {
+          from match {
+            case binding: Binding[Value] =>
+              SingletonBindingSeq(binding)
+            case bindingSeq: BindingSeq[Value] =>
+              bindingSeq
+          }
+        }
+      }
   }
 
   private[bindable] trait LowPriorityBindableSeq1 extends LowPriorityJsBindableSeq2 {
