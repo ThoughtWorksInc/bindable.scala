@@ -6,6 +6,6 @@ libraryDependencies += "com.thoughtworks.binding" %%% "futurebinding" % "12.0.0"
 
 libraryDependencies += "org.typelevel" %% "simulacrum" % "1.0.1"
 
-libraryDependencies += "com.thoughtworks.enableIf" %% "enableif" % "1.1.8"
+libraryDependencies += "com.thoughtworks.enableIf" %% "enableif" % "1.2.0"
 
 scalacOptions += "-Ymacro-annotations"
