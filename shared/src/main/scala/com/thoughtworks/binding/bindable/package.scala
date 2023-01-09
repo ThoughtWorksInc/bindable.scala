@@ -1,56 +1,11 @@
-package com.thoughtworks.binding
+package com.thoughtworks.binding.bindable {
 
-import com.thoughtworks.binding._
-import com.thoughtworks.binding.Binding._
-import com.thoughtworks.enableIf
-import simulacrum._
-import scala.language.implicitConversions
-import scala.collection.immutable.ArraySeq
+  import com.thoughtworks.binding._
+  import com.thoughtworks.binding.Binding._
+  import scala.collection.immutable.ArraySeq
+  import simulacrum._
 
-package object bindable extends Bindable.ToBindableOps with BindableSeq.ToBindableSeqOps {
-  implicit def bindableToBinding[From, Value](from: From)(implicit bindable: Bindable.Lt[From, Value]): Binding[Value] =
-    bindable.toBinding(from)
-}
-
-package bindable {
-  import com.thoughtworks.enableMembersIf
-  @enableMembersIf(c => !c.compilerSettings.exists(_.matches("""^-Xplugin:.*scalajs-compiler_[0-9\.\-]*\.jar$""")))
-  private[bindable] object Jvm {
-    trait LowPriorityJsBindableSeq2 extends LowPriorityBindableSeq2
-    trait LowPriorityJsBindableSeq0 extends LowPriorityBindableSeq0
-  }
-
-  @enableMembersIf(c => c.compilerSettings.exists(_.matches("""^-Xplugin:.*scalajs-compiler_[0-9\.\-]*\.jar$""")))
-  private[bindable] object Js {
-    import scala.scalajs.js
-
-    trait LowPriorityJsBindableSeq2 extends LowPriorityBindableSeq2 {
-
-      implicit def jsArrayBindableSeq[Value0]: BindableSeq.Aux[js.Array[Value0], Value0] =
-        new BindableSeq[js.Array[Value0]] {
-          type Value = Value0
-          def toBindingSeq(from: js.Array[Value0]): BindingSeq[Value] = Constants(
-            scalajs.runtime.toScalaVarArgs(from): _*
-          )
-        }
-    }
-
-    trait LowPriorityJsBindableSeq0 extends LowPriorityBindableSeq0 {
-
-      implicit def bindingJsArrayBindableSeq[Value0]: BindableSeq.Aux[Binding[js.Array[Value0]], Value0] =
-        new BindableSeq[Binding[js.Array[Value0]]] {
-          type Value = Value0
-          def toBindingSeq(from: Binding[js.Array[Value0]]): BindingSeq[Value] =
-            Constants(from).flatMap { from =>
-              Constants(scalajs.runtime.toScalaVarArgs(from.bind): _*)
-            }
-        }
-    }
-
-  }
-
-  import Jvm._
-  import Js._
+  import JvmOrJs._
 
   import scala.concurrent.{ExecutionContext, Future}
   import scala.util.Try
@@ -64,7 +19,7 @@ package bindable {
 
   }
 
-  object Bindable extends LowPriorityBindable0 {
+  object Bindable extends BindableJS with LowPriorityBindable0 {
     type Aux[-From, Value0] = Bindable[From] {
       type Value = Value0
     }
@@ -83,14 +38,6 @@ package bindable {
       new Bindable[Future[Value0]] {
         type Value = Option[Try[Value0]]
         def toBinding(from: Future[Value0]): Binding[Value] = FutureBinding(from)
-      }
-
-    @enableIf(c => c.compilerSettings.exists(_.matches("""^-Xplugin:.*scalajs-compiler_[0-9\.\-]*\.jar$""")))
-    implicit def thenableBindable[Value0]
-        : Bindable.Aux[scala.scalajs.js.Thenable[Value0], Option[Either[Any, Value0]]] =
-      new Bindable[scala.scalajs.js.Thenable[Value0]] {
-        type Value = Option[Either[Any, Value0]]
-        def toBinding(from: scala.scalajs.js.Thenable[Value0]): Binding[Value] = JsPromiseBinding(from)
       }
 
   }
@@ -177,8 +124,10 @@ package bindable {
       new BindableSeq[Binding[Array[Value0]]] {
         type Value = Value0
         def toBindingSeq(from: Binding[Array[Value0]]): BindingSeq[Value] =
-          Constants(from).flatMap { from =>
-            Constants(ArraySeq.unsafeWrapArray(from.bind): _*)
+          Constants(from).flatMapBinding { from =>
+            Binding {
+              Constants(ArraySeq.unsafeWrapArray(from.bind): _*)
+            }
           }
       }
 
@@ -186,66 +135,21 @@ package bindable {
       new BindableSeq[Binding[Seq[Value0]]] {
         type Value = Value0
         def toBindingSeq(from: Binding[Seq[Value0]]): BindingSeq[Value] =
-          Constants(from).flatMap { from =>
-            Constants(from.bind: _*)
+          Constants(from).flatMapBinding { from =>
+            Binding {
+              Constants(from.bind: _*)
+            }
           }
       }
 
   }
 
   /** A dependent type class that witnesses a type that can be converted to a `BindingSeq[Value]`.
-    * 
-    * @example This type class is internally used in the [[org.lrng.binding.html]] annotation, automatically converting
-    *          any compatible values into [[com.thoughtworks.binding.Binding.BindingSeq]], injecting into a HTML template.
-    *          {{{
-    *          import org.lrng.binding.html
-    *          import org.scalajs.dom._
-    *          @html
-    *          def myBinding = <span>Single Element</span>
-    * 
-    *          @html
-    *          def myBindingSeq = <span>Element 1</span><span>Element 2</span>
-    * 
-    *          @html
-    *          def myBindingOrBindingSeq(singleElement: Boolean) = {
-    *            if (singleElement) {
-    *              <span>Single Element</span>
-    *            } else {
-    *              <span>Element 1</span><span>Element 2</span>
-    *            }
-    *          }
-    * 
-    *          @html
-    *          def mySection = <section>
-    *            {myBinding.bind}
-    *            {myBinding}
-    *            {myBindingSeq}
-    *            {Binding{myBindingSeq.all.bind.toSeq}}
-    *            {myBindingSeq.all.bind.toSeq}
-    *            {myBindingOrBindingSeq(true)}
-    *            {myBindingOrBindingSeq(false)}
-    *          </section>
-    * 
-    *          val root = document.createElement("span")
-    *          html.render(root, mySection)
-    * 
-    *          root.innerHTML should be(
-    *            """<section>
-    *              <span>Single Element</span>
-    *              <span>Single Element</span>
-    *              <span>Element 1</span><span>Element 2</span>
-    *              <span>Element 1</span><span>Element 2</span>
-    *              <span>Element 1</span><span>Element 2</span>
-    *              <span>Single Element</span>
-    *              <span>Element 1</span><span>Element 2</span>
-    *            </section>"""
-    *          )
-    *          }}}
-    * 
-    *  
+    *
+    * @inheritdoc
     */
   @typeclass
-  trait BindableSeq[-From] {
+  trait BindableSeq[-From] extends BindableSeqScaladoc {
     type Value
     @op("bindSeq", alias = true)
     def toBindingSeq(from: From): BindingSeq[Value]
