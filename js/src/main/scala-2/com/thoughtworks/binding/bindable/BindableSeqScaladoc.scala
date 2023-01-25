@@ -1,8 +1,10 @@
 package com.thoughtworks.binding.bindable
 
 /** @example
-  *   This type class is internally used in the [[org.lrng.binding.html]] annotation, automatically converting any
-  *   compatible values into [[com.thoughtworks.binding.Binding.BindingSeq]], injecting into a HTML template.
+  *   This type class is internally used in the [[org.lrng.binding.html]]
+  *   annotation, automatically converting any compatible values into
+  *   [[com.thoughtworks.binding.Binding.BindingSeq]], injecting into a HTML
+  *   template.
   *   {{{
   *          import org.lrng.binding.html
   *          import org.scalajs.dom._
