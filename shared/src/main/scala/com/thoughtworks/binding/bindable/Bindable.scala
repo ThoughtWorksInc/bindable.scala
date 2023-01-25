@@ -131,17 +131,11 @@ package com.thoughtworks.binding.bindable {
       }
   }
 
-  object BindableSeq extends LowPriorityJsBindableSeq0 {
-    type Aux[-From, Value0] = BindableSeq[From] {
-      type Value = Value0
-    }
-
-    type Lt[-From, +Value0] = BindableSeq[From] {
-      type Value <: Value0
-    }
+  private[bindable] trait HighPriorityBindableSeq1
+      extends LowPriorityJsBindableSeq0 {
 
     implicit def bindingbindingSeqBindableSeq[Value0]
-        : Aux[Binding[BindingSeq[Value0]], Value0] =
+        : BindableSeq.Aux[Binding[BindingSeq[Value0]], Value0] =
       new BindableSeq[Binding[BindingSeq[Value0]]] {
         type Value = Value0
         def toBindingSeq(from: Binding[BindingSeq[Value0]]): BindingSeq[Value] =
@@ -149,7 +143,7 @@ package com.thoughtworks.binding.bindable {
       }
 
     implicit def bindingScalaArrayBindableSeq[Value0]
-        : Aux[Binding[Array[Value0]], Value0] =
+        : BindableSeq.Aux[Binding[Array[Value0]], Value0] =
       new BindableSeq[Binding[Array[Value0]]] {
         type Value = Value0
         def toBindingSeq(from: Binding[Array[Value0]]): BindingSeq[Value] =
@@ -161,7 +155,7 @@ package com.thoughtworks.binding.bindable {
       }
 
     implicit def bindingScalaSeqBindableSeq[Value0]
-        : Aux[Binding[Seq[Value0]], Value0] =
+        : BindableSeq.Aux[Binding[Seq[Value0]], Value0] =
       new BindableSeq[Binding[Seq[Value0]]] {
         type Value = Value0
         def toBindingSeq(from: Binding[Seq[Value0]]): BindingSeq[Value] =
@@ -171,7 +165,88 @@ package com.thoughtworks.binding.bindable {
             }
           }
       }
+  }
 
+  object BindableSeq extends HighPriorityBindableSeq1 {
+    type Aux[-From, Value0] = BindableSeq[From] {
+      type Value = Value0
+    }
+
+    type Lt[-From, +Value0] = BindableSeq[From] {
+      type Value <: Value0
+    }
+
+    implicit def bindingbindingSeqBindingBindableSeq[Value0]
+        : BindableSeq.Aux[Binding[BindingSeq[Binding[Value0]]], Value0] =
+      new BindableSeq[Binding[BindingSeq[Binding[Value0]]]] {
+        type Value = Value0
+        def toBindingSeq(
+            from: Binding[BindingSeq[Binding[Value0]]]
+        ): BindingSeq[Value] =
+          SingletonBindingSeq(from).flatMapBinding { bindingSeq =>
+            Constant(bindingSeq.mapBinding(identity))
+          }
+      }
+
+    implicit def bindingScalaArrayBindingBindableSeq[Value0]
+        : BindableSeq.Aux[Binding[Array[Binding[Value0]]], Value0] =
+      new BindableSeq[Binding[Array[Binding[Value0]]]] {
+        type Value = Value0
+        def toBindingSeq(
+            from: Binding[Array[Binding[Value0]]]
+        ): BindingSeq[Value] =
+          SingletonBindingSeq(from).flatMapBinding { array =>
+            Constant(
+              Constants(ArraySeq.unsafeWrapArray(array): _*)
+                .mapBinding(identity)
+            )
+          }
+      }
+
+    implicit def bindingScalaSeqBindingBindableSeq[Value0]
+        : BindableSeq.Aux[Binding[Seq[Binding[Value0]]], Value0] =
+      new BindableSeq[Binding[Seq[Binding[Value0]]]] {
+        type Value = Value0
+        def toBindingSeq(
+            from: Binding[Seq[Binding[Value0]]]
+        ): BindingSeq[Value] =
+          SingletonBindingSeq(from).flatMapBinding { seq =>
+            Constant(
+              Constants(seq: _*)
+                .mapBinding(identity)
+            )
+          }
+      }
+
+    implicit def bindingSeqBindingBindableSeq[Value0]
+        : BindableSeq.Aux[BindingSeq[Binding[Value0]], Value0] =
+      new BindableSeq[BindingSeq[Binding[Value0]]] {
+        type Value = Value0
+        def toBindingSeq(
+            from: BindingSeq[Binding[Value0]]
+        ): BindingSeq[Value] =
+          from.mapBinding(identity)
+      }
+
+    implicit def scalaArrayBindingBindableSeq[Value0]
+        : BindableSeq.Aux[Array[Binding[Value0]], Value0] =
+      new BindableSeq[Array[Binding[Value0]]] {
+        type Value = Value0
+        def toBindingSeq(
+            from: Array[Binding[Value0]]
+        ): BindingSeq[Value] =
+          Constants(ArraySeq.unsafeWrapArray(from): _*)
+            .mapBinding(identity)
+
+      }
+
+    implicit def scalaSeqBindingBindableSeq[Value0]
+        : BindableSeq.Aux[Seq[Binding[Value0]], Value0] =
+      new BindableSeq[Seq[Binding[Value0]]] {
+        type Value = Value0
+        def toBindingSeq(from: Seq[Binding[Value0]]): BindingSeq[Value] =
+          Constants(from: _*).mapBinding(identity)
+      }
   }
 
   /** A dependent type class that witnesses a type that can be converted to a
