@@ -2,7 +2,7 @@ enablePlugins(ScalaJSBundlerPlugin)
 
 enablePlugins(Example)
 
-libraryDependencies += "com.thoughtworks.binding" %%% "jspromisebinding" % "12.1.0"
+libraryDependencies += "com.thoughtworks.binding" %%% "jspromisebinding" % "12.1.1"
 
 libraryDependencies ++= PartialFunction.condOpt(scalaBinaryVersion.value) {
   case "2.13" =>
