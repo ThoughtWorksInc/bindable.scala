@@ -2,7 +2,7 @@ libraryDependencies += "org.scalatest" %%% "scalatest" % "3.2.15" % Test
 
 libraryDependencies += "com.thoughtworks.binding" %%% "futurebinding" % "12.1.0"
 
-libraryDependencies += "com.thoughtworks.binding" %%% "binding" % "12.1.0+102-ee30ec0b"
+libraryDependencies += "com.thoughtworks.binding" %%% "binding" % "12.1.0+116-c25b3725"
 
 libraryDependencies += {
   import Ordering.Implicits._
