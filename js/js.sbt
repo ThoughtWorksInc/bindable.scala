@@ -6,7 +6,7 @@ libraryDependencies += "com.thoughtworks.binding" %%% "jspromisebinding" % "12.1
 
 libraryDependencies ++= PartialFunction.condOpt(scalaBinaryVersion.value) {
   case "2.13" =>
-    "com.yang-bo" %%% "html" % "2.0.0" % Optional
+    "com.yang-bo" %%% "html" % "2.0.1" % Optional
 }
 
 libraryDependencies ++= PartialFunction.condOpt(scalaBinaryVersion.value) {
