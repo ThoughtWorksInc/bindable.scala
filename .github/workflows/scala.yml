@@ -19,9 +19,9 @@ jobs:
       matrix:
         include:
         - scala: 3.2.1
-        - scala: 2.13.4
+        - scala: 2.13.11
           sbt-args: --addPluginSbtFile=project/plugins.sbt.scalajs06
-        - scala: 2.13.4
+        - scala: 2.13.11
 
     steps:
     - uses: actions/checkout@v3
