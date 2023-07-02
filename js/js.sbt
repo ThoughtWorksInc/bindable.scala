@@ -20,3 +20,6 @@ Test / scalacOptions ++= PartialFunction.condOpt(scalaBinaryVersion.value) {
   case "2.13" =>
     "-Ymacro-annotations"
 }
+
+// Workaround for https://github.com/scalacenter/scalajs-bundler/issues/438
+version in webpack := "5.75.0"
