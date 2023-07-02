@@ -27,6 +27,6 @@ version in webpack := {
   if (VersionNumber(scalaJSVersion).numbers >= Seq(1)) {
     "5.88.1"
   } else {
-    "4.46.0"
+    "3.12.0"
   }
 }
