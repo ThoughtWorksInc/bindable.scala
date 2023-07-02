@@ -22,4 +22,11 @@ Test / scalacOptions ++= PartialFunction.condOpt(scalaBinaryVersion.value) {
 }
 
 // Workaround for https://github.com/scalacenter/scalajs-bundler/issues/438
-version in webpack := if (VersionNumber(scalaJSVersion).numbers >= Seq(1)) "5.88.1" else "4.46.0"
+version in webpack := {
+  import Ordering.Implicits._
+  if (VersionNumber(scalaJSVersion).numbers >= Seq(1)) {
+    "5.88.1"
+  } else {
+    "4.46.0"
+  }
+}
