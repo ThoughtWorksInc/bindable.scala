@@ -20,3 +20,13 @@ Test / scalacOptions ++= PartialFunction.condOpt(scalaBinaryVersion.value) {
   case "2.13" =>
     "-Ymacro-annotations"
 }
+
+// Workaround for https://github.com/scalacenter/scalajs-bundler/issues/438
+version in webpack := {
+  import Ordering.Implicits._
+  if (VersionNumber(scalaJSVersion).numbers >= Seq(1)) {
+    "5.88.1"
+  } else {
+    "3.12.0"
+  }
+}
